@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Synaptix — EEG Intelligence Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Hero ── */
+    #hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 5vw 60px;background:radial-gradient(ellipse 80% 70% at 70% 40%,rgba(142,217,210,.09) 0%,transparent 70%)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(142,217,210,.18);border:1px solid rgba(142,217,210,.4);color:var(--d);padding:6px 14px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px;font-family:'Open Sans',sans-serif}
+    .badge-dot{width:7px;height:7px;background:var(--mint);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+    .hero-text h1{margin-bottom:16px}
+    .hero-text h1 span{color:var(--d)}
+    .hero-desc{font-size:1.05rem;max-width:480px;margin-bottom:32px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+    .hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+    .stat-n{font-family:'Poppins',sans-serif;font-size:1.55rem;font-weight:700;color:var(--d);line-height:1}
+    .stat-l{font-size:.77rem;color:var(--muted);font-weight:500;margin-top:2px;font-family:'Open Sans',sans-serif}
+    .hero-visual{display:flex;align-items:center;justify-content:center;height:480px}
+    #eegCanvas{width:100%;height:100%;border-radius:16px}
+    @media(max-width:960px){#hero{grid-template-columns:1fr}.hero-visual{height:280px;margin-top:32px}}
+  </style>
+</head>
+<body>
+
+<!-- ════ NAV ════ -->
+<nav>
+  <a href="index.html" class="nav-logo"><img src="logo.jpg" alt="Synaptix"/></a>
+  <div class="nav-links">
+    <a href="platform.html">Platform</a>
+    <a href="#how">How It Works</a>
+    <a href="research.html">Research</a>
+    <a href="#team">Team</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-cta">
+    <a href="mailto:jaewonparkk73@gmail.com" class="btn btn-o" style="padding:9px 18px;font-size:.85rem">Contact</a>
+    <a href="#demo" class="btn btn-p" style="padding:9px 18px;font-size:.85rem">Request Demo</a>
+  </div>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section id="hero">
+  <div class="hero-text">
+    <div class="hero-badge"><span class="badge-dot"></span>EEG Signal Processing Platform</div>
+    <h1>Precision EEG Analysis.<br><span>Built for Research.</span></h1>
+    <p class="hero-desc">Synaptix standardizes and accelerates EEG preprocessing — giving every lab a reproducible, lab-calibrated pipeline from raw signal to publication-ready output.</p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn btn-p">Request Demo →</a>
+      <a href="#how" class="btn btn-o">See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n">2 hrs → 15 min</div><div class="stat-l">preprocessing time</div></div>
+      <div><div class="stat-n">90%</div><div class="stat-l">less repetitive QC</div></div>
+      <div><div class="stat-n">40+</div><div class="stat-l">pipelines supported</div></div>
+    </div>
+  </div>
+  <div class="hero-visual"><canvas id="eegCanvas"></canvas></div>
+</section>
+
+<!-- ── EEG divider ── -->
+<div class="eeg-div"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L100 20L108 10L116 30L124 15L132 25L138 20L250 20L258 7L266 33L274 13L282 27L288 20L400 20L408 11L416 29L422 20L540 20L548 5L556 35L564 15L572 28L578 20L700 20L708 12L716 28L722 20L840 20L848 8L856 32L864 16L872 26L878 20L1000 20L1008 10L1016 30L1022 20L1140 20L1148 12L1156 28L1162 20L1280 20L1288 8L1296 32L1302 20L1440 20" stroke="#0F5B63" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.15"/></svg></div>
+
+<!-- ════ PROBLEM ════ -->
+<section id="problem" style="background:var(--pale)">
+  <div class="two-col">
+
+    <!-- LEFT: illustration -->
+    <div style="display:flex;justify-content:center">
+      <svg viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:440px">
+        <circle cx="210" cy="190" r="170" fill="rgba(142,217,210,.06)"/>
+        <!-- Monitor frame -->
+        <rect x="72" y="52" width="276" height="212" rx="13" fill="#F6FCFB" stroke="#2A7D84" stroke-width="2.5"/>
+        <rect x="81" y="61" width="258" height="193" rx="9" fill="white"/>
+        <!-- Titlebar -->
+        <rect x="81" y="61" width="258" height="27" rx="9" fill="rgba(15,91,99,.05)"/>
+        <circle cx="97" cy="74.5" r="5" fill="rgba(220,80,80,.35)"/>
+        <circle cx="112" cy="74.5" r="5" fill="rgba(220,180,60,.35)"/>
+        <circle cx="127" cy="74.5" r="5" fill="rgba(80,180,80,.25)"/>
+        <text x="210" y="79" text-anchor="middle" font-family="'Open Sans',sans-serif" font-size="7.5" fill="#0F5B63" font-weight="600">MANUAL EEG QC — Session 14 of 48</text>
+        <!-- EEG Row 1 -->
+        <text x="89" y="106" font-family="'Open Sans',sans-serif" font-size="7" fill="#7A9FA4">Ch01</text>
+        <path d="M108 102L114 102L117 93L121 113L125 97L131 110L135 88L140 118L144 99L150 109L154 102L163 102L168 93L173 113L177 100L182 102L193 102L198 91L203 115L208 100L212 108L216 102L244 102" stroke="#0F5B63" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+        <circle cx="261" cy="102" r="9" fill="rgba(220,60,60,.08)" stroke="rgba(220,60,60,.5)" stroke-width="1.5"/>
+        <line x1="255" y1="96" x2="267" y2="108" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="267" y1="96" x2="255" y2="108" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- EEG Row 2 -->
+        <text x="89" y="128" font-family="'Open Sans',sans-serif" font-size="7" fill="#7A9FA4">Ch02</text>
+        <path d="M108 124L118 124L122 115L127 133L132 120L138 130L143 116L148 134L152 124L160 124L165 115L171 133L175 122L182 124L193 124L198 115L203 133L208 122L216 124L244 124" stroke="#2A7D84" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+        <circle cx="261" cy="124" r="9" fill="rgba(15,91,99,.08)" stroke="rgba(15,91,99,.3)" stroke-width="1.5"/>
+        <path d="M255 124L258 128L267 117" stroke="rgba(15,91,99,.65)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- EEG Row 3 – artifact/messy -->
+        <text x="89" y="150" font-family="'Open Sans',sans-serif" font-size="7" fill="#7A9FA4">Ch03</text>
+        <path d="M108 146L112 146L115 129L119 163L122 135L126 158L129 122L133 164L136 140L140 156L144 146L150 146L155 130L160 160L163 146L173 146L178 128L183 163L187 146L244 146" stroke="#4A9BA3" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+        <circle cx="261" cy="146" r="9" fill="rgba(220,60,60,.08)" stroke="rgba(220,60,60,.5)" stroke-width="1.5"/>
+        <line x1="255" y1="140" x2="267" y2="152" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="267" y1="140" x2="255" y2="152" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- EEG Row 4 -->
+        <text x="89" y="172" font-family="'Open Sans',sans-serif" font-size="7" fill="#7A9FA4">Ch04</text>
+        <path d="M108 168L120 168L124 160L129 177L134 166L139 174L144 161L149 175L153 168L163 168L168 160L173 177L177 166L184 168L195 168L200 160L205 177L209 166L216 168L244 168" stroke="#8ED9D2" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+        <circle cx="261" cy="168" r="9" fill="rgba(42,125,132,.08)" stroke="rgba(42,125,132,.3)" stroke-width="1.5"/>
+        <text x="261" y="172" text-anchor="middle" font-family="'Open Sans',sans-serif" font-size="9" fill="rgba(42,125,132,.7)" font-weight="700">?</text>
+        <!-- Progress bar -->
+        <rect x="88" y="190" width="244" height="13" rx="4" fill="rgba(15,91,99,.04)" stroke="rgba(15,91,99,.08)" stroke-width="1"/>
+        <rect x="88" y="190" width="74" height="13" rx="4" fill="rgba(15,91,99,.18)"/>
+        <text x="210" y="200" text-anchor="middle" font-family="'Open Sans',sans-serif" font-size="7" fill="#7A9FA4">14 / 48 datasets reviewed</text>
+        <!-- Monitor stand -->
+        <rect x="197" y="264" width="26" height="17" rx="2" fill="#2A7D84" opacity="0.2"/>
+        <rect x="178" y="279" width="64" height="8" rx="3" fill="#2A7D84" opacity="0.16"/>
+        <!-- Desk surface -->
+        <rect x="24" y="286" width="372" height="9" rx="4" fill="#2A7D84" opacity="0.12"/>
+        <!-- Clock -->
+        <circle cx="365" cy="84" r="30" fill="white" stroke="#2A7D84" stroke-width="2" opacity="0.8"/>
+        <line x1="365" y1="57" x2="365" y2="63" stroke="#2A7D84" stroke-width="1.5"/>
+        <line x1="365" y1="105" x2="365" y2="111" stroke="#2A7D84" stroke-width="1.5"/>
+        <line x1="337" y1="84" x2="343" y2="84" stroke="#2A7D84" stroke-width="1.5"/>
+        <line x1="387" y1="84" x2="393" y2="84" stroke="#2A7D84" stroke-width="1.5"/>
+        <line x1="365" y1="84" x2="365" y2="62" stroke="#0F5B63" stroke-width="2" stroke-linecap="round"/>
+        <line x1="365" y1="84" x2="381" y2="92" stroke="#0F5B63" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="365" cy="84" r="3" fill="#0F5B63"/>
+        <!-- Stacked files (left) -->
+        <rect x="26" y="242" width="56" height="7" rx="2" fill="#8ED9D2" opacity="0.55"/>
+        <rect x="26" y="251" width="56" height="7" rx="2" fill="#4A9BA3" opacity="0.42"/>
+        <rect x="26" y="260" width="56" height="7" rx="2" fill="#2A7D84" opacity="0.32"/>
+        <rect x="26" y="269" width="56" height="7" rx="2" fill="#0F5B63" opacity="0.22"/>
+        <text x="54" y="300" text-anchor="middle" font-family="'Open Sans',sans-serif" font-size="7.5" fill="#7A9FA4">34 pending</text>
+        <!-- Magnifying glass (right of monitor) -->
+        <circle cx="362" cy="208" r="25" fill="rgba(142,217,210,.1)" stroke="#2A7D84" stroke-width="2.5"/>
+        <path d="M344 208L348 208L351 200L355 216L358 206L362 212L365 202L368 211L372 208L380 208" stroke="#0F5B63" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+        <line x1="380" y1="226" x2="394" y2="240" stroke="#2A7D84" stroke-width="3" stroke-linecap="round"/>
+        <!-- Person (abstract) -->
+        <circle cx="210" cy="326" r="17" fill="none" stroke="#2A7D84" stroke-width="1.5" opacity="0.38"/>
+        <path d="M193 342Q210 356 227 342" fill="none" stroke="#2A7D84" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+        <path d="M196 350L166 364" stroke="#2A7D84" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
+        <path d="M224 350L254 364" stroke="#2A7D84" stroke-width="1.5" stroke-linecap="round" opacity="0.28"/>
+        <rect x="153" y="363" width="114" height="10" rx="3" fill="#8ED9D2" opacity="0.22"/>
+      </svg>
+    </div>
+
+    <!-- RIGHT: header + bullets -->
+    <div>
+      <div class="sec-label">The Problem</div>
+      <h2 style="margin-bottom:16px">EEG preprocessing is<br><span style="color:var(--d)">slow and inconsistent.</span></h2>
+      <p style="margin-bottom:28px;font-size:1rem;line-height:1.7">Every lab handles EEG preprocessing differently — and manually. The result is hours of repeated work, inconsistent quality, and pipelines that are nearly impossible to reproduce across sites or sessions.</p>
+      <ul class="problem-bullets">
+        <li><span class="x-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(220,60,60,.08)" stroke="rgba(220,60,60,.45)" stroke-width="1.5"/><line x1="6.5" y1="6.5" x2="13.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/><line x1="13.5" y1="6.5" x2="6.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/></svg></span>EEG preprocessing is slow and inconsistent</li>
+        <li><span class="x-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(220,60,60,.08)" stroke="rgba(220,60,60,.45)" stroke-width="1.5"/><line x1="6.5" y1="6.5" x2="13.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/><line x1="13.5" y1="6.5" x2="6.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/></svg></span>Every lab uses a different pipeline — no shared standard</li>
+        <li><span class="x-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(220,60,60,.08)" stroke="rgba(220,60,60,.45)" stroke-width="1.5"/><line x1="6.5" y1="6.5" x2="13.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/><line x1="13.5" y1="6.5" x2="6.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/></svg></span>Manual quality control takes hours per session</li>
+        <li><span class="x-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(220,60,60,.08)" stroke="rgba(220,60,60,.45)" stroke-width="1.5"/><line x1="6.5" y1="6.5" x2="13.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/><line x1="13.5" y1="6.5" x2="6.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/></svg></span>Reproducibility across sessions and labs is difficult</li>
+        <li><span class="x-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(220,60,60,.08)" stroke="rgba(220,60,60,.45)" stroke-width="1.5"/><line x1="6.5" y1="6.5" x2="13.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/><line x1="13.5" y1="6.5" x2="6.5" y2="13.5" stroke="rgba(220,60,60,.75)" stroke-width="1.5" stroke-linecap="round"/></svg></span>New students require weeks of training before contributing</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── EEG divider ── -->
+<div class="eeg-div"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L120 20L128 11L136 29L144 18L152 26L158 20L280 20L288 7L296 33L304 16L312 28L318 20L440 20L448 12L456 28L462 20L580 20L588 6L596 34L604 18L612 26L618 20L740 20L748 11L756 29L762 20L880 20L888 8L896 32L904 16L912 28L918 20L1040 20L1048 11L1056 29L1062 20L1180 20L1188 8L1196 32L1202 20L1320 20L1328 12L1336 28L1342 20L1440 20" stroke="#2A7D84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.13"/></svg></div>
+
+<!-- ════ SOLUTION ════ -->
+<section id="solution">
+  <div class="sec-hdr center">
+    <div class="sec-label">Our Solution</div>
+    <h2>Synaptix automates the<br>entire preprocessing workflow.</h2>
+    <p style="font-size:1.02rem">A standardized, lab-calibrated pipeline that runs automatically — from raw EEG to a clean, exportable dataset — in minutes, not hours.</p>
+  </div>
+  <div class="flow-wrap">
+
+    <div class="flow-box">
+      <div class="flow-num">1</div>
+      <div>
+        <h3>Input EEG</h3>
+        <p>Import from any amplifier or format — BrainVision, EDF, SET, FIF. Metadata normalized automatically.</p>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="24" height="28" viewBox="0 0 24 28"><line x1="12" y1="0" x2="12" y2="22"/><polyline points="5,16 12,24 19,16"/></svg>
+    </div>
+
+    <div class="flow-box">
+      <div class="flow-num">2</div>
+      <div>
+        <h3>Artifact Detection</h3>
+        <p>Automated artifact flagging using ASR, ICA decomposition, and bad-channel detection — logged and auditable.</p>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="24" height="28" viewBox="0 0 24 28"><line x1="12" y1="0" x2="12" y2="22"/><polyline points="5,16 12,24 19,16"/></svg>
+    </div>
+
+    <div class="flow-box">
+      <div class="flow-num">3</div>
+      <div>
+        <h3>Lab-Specific Preprocessing</h3>
+        <p>Each lab preserves its own pipeline standards — Synaptix adapts to your workflow, not the other way around.</p>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="24" height="28" viewBox="0 0 24 28"><line x1="12" y1="0" x2="12" y2="22"/><polyline points="5,16 12,24 19,16"/></svg>
+    </div>
+
+    <div class="flow-box">
+      <div class="flow-num">4</div>
+      <div>
+        <h3>Quality Report</h3>
+        <p>Auto-generated QC summary with channel maps, rejection rates, ICA components, and signal quality scores.</p>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="24" height="28" viewBox="0 0 24 28"><line x1="12" y1="0" x2="12" y2="22"/><polyline points="5,16 12,24 19,16"/></svg>
+    </div>
+
+    <div class="flow-box" style="border-color:var(--d);background:var(--pale)">
+      <div class="flow-num" style="background:var(--mint);color:var(--d)">✓</div>
+      <div>
+        <h3>Export</h3>
+        <p>BIDS-compliant archives, EDF/BDF, JSON summaries, and LaTeX-ready figures — ready for analysis or submission.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── EEG divider ── -->
+<div class="eeg-div"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L80 20L88 10L96 30L104 15L112 25L118 20L230 20L238 8L246 32L254 14L262 26L268 20L380 20L388 11L396 29L402 20L520 20L528 6L536 34L544 16L552 27L558 20L680 20L688 12L696 28L702 20L820 20L828 9L836 31L844 17L852 26L858 20L980 20L988 11L996 29L1002 20L1120 20L1128 8L1136 32L1142 20L1260 20L1268 11L1276 29L1282 20L1400 20L1408 12L1416 28L1440 20" stroke="#0F5B63" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.13"/></svg></div>
+
+<!-- ════ FEATURES (3×2) ════ -->
+<section id="features" style="background:var(--pale)">
+  <div class="sec-hdr center">
+    <div class="sec-label">Platform Capabilities</div>
+    <h2>Built for Rigorous<br>Neuroscience Research</h2>
+    <p style="font-size:1.02rem">Every component is designed around the demands of peer-reviewed research — reproducible, validated, and extensible.</p>
+  </div>
+  <div class="feat-grid">
+    <!-- Row 1 -->
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <h3>Real-Time Signal Streaming</h3>
+      <p>Ingest and visualize up to 256-channel EEG streams at full bandwidth with automatic impedance monitoring and live artifact flagging.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+      <h3>Automated Preprocessing</h3>
+      <p>PREP pipeline, ICA decomposition, ASR, and bandpass filtering — configurable per-paradigm with full audit trails and parameter logs.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></div>
+      <h3>Epoch &amp; Event Segmentation</h3>
+      <p>Define epochs by trigger codes, response markers, or custom logic. Epoch rejection and interpolation are logged and reproducible.</p>
+    </div>
+    <!-- Row 2 -->
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l8-6 8 6v10"/><path d="M10 20v-6h4v6"/></svg></div>
+      <h3>Spectral &amp; Time-Frequency</h3>
+      <p>FFT, Welch PSD, Morlet wavelets, and ERSP/ITC — with interactive topographic maps exportable in standard neuroimaging formats.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <h3>Source Localization</h3>
+      <p>LORETA, sLORETA, and dipole fitting with MRI-registered head models, compatible with MNI-space atlases and Talairach coordinates.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <h3>Report Generation</h3>
+      <p>LaTeX-ready figures, BrainVision and EDF/BDF exports, and machine-readable JSON summaries compatible with BIDS standards.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── EEG divider ── -->
+<div class="eeg-div"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L110 20L118 9L126 31L134 16L142 25L148 20L270 20L278 7L286 33L294 14L302 27L308 20L430 20L438 11L446 29L452 20L570 20L578 6L586 34L594 17L602 26L608 20L730 20L738 10L746 30L752 20L870 20L878 9L886 31L892 20L1010 20L1018 11L1026 29L1032 20L1150 20L1158 8L1166 32L1172 20L1290 20L1298 11L1306 29L1312 20L1440 20" stroke="#2A7D84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.14"/></svg></div>
+
+<!-- ════ HOW IT WORKS ════ -->
+<section id="how">
+  <div class="sec-hdr center">
+    <div class="sec-label">How It Works</div>
+    <h2>From Raw Signal to<br>Analysis-Ready Data</h2>
+    <p style="font-size:1.02rem">A four-stage workflow designed to help labs move from raw EEG recordings to clean, documented datasets for downstream analysis.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <h3>Ingest</h3>
+      <p>Import EEG recordings and organize metadata, channel information, and study details in a consistent format.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <h3>Clean</h3>
+      <p>Apply lab-calibrated preprocessing steps such as filtering, artifact screening, bad-channel review, and optional ICA-based workflows.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <h3>Review</h3>
+      <p>Inspect quality-control outputs, understand preprocessing decisions, and adjust parameters when needed.</p>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <h3>Export</h3>
+      <p>Export cleaned data, preprocessing logs, and QC reports for analysis in tools such as EEGLAB, MNE, or your lab's existing workflow.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── EEG divider ── -->
+<div class="eeg-div"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L100 20L108 11L116 29L122 20L240 20L248 7L256 33L264 16L272 28L278 20L400 20L408 12L416 28L422 20L540 20L548 6L556 34L564 16L572 27L578 20L700 20L708 11L716 29L722 20L840 20L848 9L856 31L862 20L980 20L988 11L996 29L1002 20L1120 20L1128 8L1136 32L1142 20L1260 20L1268 12L1276 28L1282 20L1400 20L1408 11L1416 29L1440 20" stroke="#0F5B63" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.13"/></svg></div>
+
+<!-- ════ WHY SYNAPTIX ════ -->
+<section id="why">
+  <div class="sec-hdr center" style="color:#fff">
+    <div class="sec-label" style="color:var(--mint)">Why Synaptix</div>
+    <h2 style="color:#fff;margin-bottom:12px">The numbers speak<br>for themselves.</h2>
+    <p style="color:rgba(255,255,255,.65)">Early-access labs reported dramatic improvements in turnaround time and team efficiency within their first month.</p>
+  </div>
+  <div class="why-grid">
+    <div>
+      <div class="why-before">Avg. preprocessing time per session</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0">
+        <span style="font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:700;color:rgba(255,255,255,.4);text-decoration:line-through">2 hrs</span>
+        <span class="why-arr">→</span>
+        <span class="why-after">15 min</span>
+      </div>
+      <div class="why-label">8× faster preprocessing</div>
+    </div>
+    <div>
+      <div class="why-before">Repetitive QC work</div>
+      <div class="why-after" style="margin:8px 0">90%</div>
+      <div class="why-label">reduction in manual QC effort</div>
+    </div>
+    <div>
+      <div class="why-before">Onboarding time for new students</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0">
+        <span style="font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:700;color:rgba(255,255,255,.4);text-decoration:line-through">3 wks</span>
+        <span class="why-arr">→</span>
+        <span class="why-after">3 days</span>
+      </div>
+      <div class="why-label">faster lab onboarding</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EEG divider (on teal bg) ── -->
+<div class="eeg-div" style="background:var(--d)"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L100 20L108 10L116 30L122 20L240 20L248 8L256 32L264 14L272 26L278 20L400 20L408 11L416 29L422 20L540 20L548 6L556 34L564 16L572 27L578 20L700 20L708 11L716 29L722 20L840 20L848 8L856 32L862 20L980 20L988 11L996 29L1002 20L1120 20L1128 8L1136 32L1142 20L1260 20L1268 12L1276 28L1282 20L1400 20L1408 11L1416 29L1440 20" stroke="rgba(142,217,210,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+<!-- ════ DEMO REQUEST ════ -->
+<section id="demo" style="background:var(--pale)">
+  <div class="sec-hdr center">
+    <div class="sec-label">Request Demo</div>
+    <h2>See Synaptix in Action</h2>
+    <p style="font-size:1.02rem">Fill out the form and we'll reach out to schedule a personalized walkthrough for your lab.</p>
+  </div>
+  <div class="demo-inner">
+    <div id="demo-form-wrap">
+      <form id="demoForm" onsubmit="submitForm(event)">
+        <div class="form-grid">
+          <div class="ff"><label for="f-name">Name *</label><input type="text" id="f-name" placeholder="Your full name" required/></div>
+          <div class="ff"><label for="f-email">Email *</label><input type="email" id="f-email" placeholder="your@university.edu" required/></div>
+          <div class="ff"><label for="f-institution">Institution *</label><input type="text" id="f-institution" placeholder="University / Research Institute" required/></div>
+          <div class="ff"><label for="f-lab">Lab Name</label><input type="text" id="f-lab" placeholder="e.g. Cognitive Neuroscience Lab"/></div>
+          <div class="ff"><label for="f-software">Current EEG Software</label>
+            <select id="f-software">
+              <option value="">Select…</option>
+              <option>EEGLAB</option><option>MNE-Python</option><option>BrainVision Analyzer</option>
+              <option>ERPLAB</option><option>Fieldtrip</option><option>SPM</option><option>Custom / Other</option>
+            </select>
+          </div>
+          <div class="ff"><label for="f-datasets">Number of Datasets</label>
+            <select id="f-datasets">
+              <option value="">Select…</option>
+              <option>1–10</option><option>11–50</option><option>51–200</option><option>200+</option>
+            </select>
+          </div>
+          <div class="ff full"><label for="f-pain">Biggest Preprocessing Challenge</label><textarea id="f-pain" placeholder="e.g. artifact rejection consistency, reproducibility across RAs, slow ICA…"></textarea></div>
+          <div class="ff full"><label for="f-msg">Anything else you'd like to share?</label><textarea id="f-msg" placeholder="Questions, timing, or specific use cases…" style="min-height:80px"></textarea></div>
+        </div>
+        <div style="margin-top:20px"><button type="submit" class="btn btn-p" style="font-size:1rem;padding:14px 36px">Submit Request →</button></div>
+      </form>
+    </div>
+    <div class="thanks" id="thanks-msg">
+      <div class="check-circle"><svg width="28" height="28" viewBox="0 0 28 28"><polyline points="5 14 11 20 23 8"/></svg></div>
+      <h3>Thank you!</h3>
+      <p>We'll get back to you soon. We're excited to show you what Synaptix can do for your lab.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── EEG divider ── -->
+<div class="eeg-div"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L90 20L98 10L106 30L112 18L120 26L126 20L250 20L258 8L266 32L274 15L282 27L288 20L410 20L418 11L426 29L432 20L550 20L558 7L566 33L574 15L582 28L588 20L710 20L718 10L726 30L732 20L850 20L858 8L866 32L872 20L990 20L998 10L1006 30L1012 20L1130 20L1138 8L1146 32L1152 20L1270 20L1278 11L1286 29L1292 20L1410 20L1418 10L1426 30L1440 20" stroke="#0F5B63" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.13"/></svg></div>
+
+<!-- ════ TEAM ════ -->
+<section id="team">
+  <div class="sec-hdr center">
+    <div class="sec-label">Team</div>
+    <h2>The People Behind<br>Synaptix</h2>
+    <p style="font-size:1.02rem">Built by researchers who have spent years in the EEG lab — and know exactly how painful preprocessing can be.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <img class="avatar-photo" src="headshot-jaewon.jpg" alt="Jaewon Park"/>
+      <h3>Jaewon Park</h3>
+      <div class="team-school">Boston College</div>
+      <div class="team-role">Co-Founder</div>
+      <div class="team-links">
+        <a href="https://www.linkedin.com/in/jaewonparkkk" target="_blank" rel="noopener" class="tl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="team-card">
+      <img class="avatar-photo" src="headshot-kelsey.jpg" alt="Ruoqing (Kelsey) Wang"/>
+      <h3>Ruoqing (Kelsey) Wang</h3>
+      <div class="team-school">Boston College</div>
+      <div class="team-role">Co-Founder</div>
+      <div class="team-links">
+        <a href="https://www.linkedin.com/in/kelsey-wang/" target="_blank" rel="noopener" class="tl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="team-card">
+      <img class="avatar-photo" src="headshot-yizhen.jpg" alt="Yizhen Zhang"/>
+      <h3>Yizhen Zhang</h3>
+      <div class="team-school">Boston College</div>
+      <div class="team-role">Co-Founder</div>
+      <div class="team-links">
+        <a href="https://www.linkedin.com/in/yizhen-zhang-161359417/" target="_blank" rel="noopener" class="tl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EEG divider ── -->
+<div class="eeg-div"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none"><path d="M0 20L130 20L138 9L146 31L154 17L162 26L168 20L290 20L298 7L306 33L314 15L322 28L328 20L450 20L458 11L466 29L472 20L590 20L598 6L606 34L614 15L622 27L628 20L750 20L758 10L766 30L772 20L890 20L898 9L906 31L912 20L1030 20L1038 11L1046 29L1052 20L1170 20L1178 8L1186 32L1192 20L1310 20L1318 11L1326 29L1332 20L1440 20" stroke="#2A7D84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.13"/></svg></div>
+
+<!-- ════ FAQ ════ -->
+<section id="faq" style="background:var(--pale)">
+  <div class="sec-hdr center">
+    <div class="sec-label">FAQ</div>
+    <h2>Common Questions</h2>
+  </div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What is Synaptix?<span class="faq-icon"></span></button>
+      <div class="faq-a"><p>Synaptix is an EEG preprocessing and quality-control tool designed to help research labs standardize and speed up their preprocessing workflows — from raw signal import all the way to a clean, exportable, BIDS-compliant dataset.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Does Synaptix replace EEGLAB or MNE?<span class="faq-icon"></span></button>
+      <div class="faq-a"><p>No. Synaptix is designed to work alongside existing EEG tools and lab workflows, not replace them. Think of it as a standardized preprocessing layer that plugs into your existing toolchain and handles the repetitive, time-consuming parts automatically.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Can labs customize their preprocessing pipeline?<span class="faq-icon"></span></button>
+      <div class="faq-a"><p>Yes. Synaptix is built around lab-calibrated workflows, so each lab can preserve its own standards — specific filter settings, epoch windows, ICA criteria, and rejection thresholds — while still benefiting from automation and reproducibility.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Who is Synaptix for?<span class="faq-icon"></span></button>
+      <div class="faq-a"><p>Synaptix is for EEG researchers, lab managers, graduate students, and research teams who spend significant time on preprocessing and quality control. It's especially valuable for labs running multi-site studies or training new research assistants.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is Synaptix available now?<span class="faq-icon"></span></button>
+      <div class="faq-a"><p>We are currently speaking with researchers and developing our early prototype. You can request a demo or contact us to learn more — early-access labs will help shape the product and receive priority onboarding support.</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="logo.jpg" alt="Synaptix"/>
+      <p>EEG signal processing software for rigorous, reproducible neuroscience research.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="platform.html">Features</a>
+      <a href="#solution">How It Works</a>
+      <a href="research.html">Research</a>
+      <a href="#demo">Request Demo</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#team">Team</a>
+      <a href="careers.html">Careers</a>
+      <a href="#demo">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bot">
+    <span>© 2026 Synaptix. All rights reserved.</span>
+    <span style="color:rgba(255,255,255,.3)">EEG Intelligence Platform</span>
+  </div>
+</footer>
+
+<!-- ════ SCRIPTS ════ -->
+<script>
+/* ── EEG Canvas ── */
+(function(){
+  const canvas=document.getElementById('eegCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const DEEP='#0F5B63',MID='#2A7D84',LIGHT='#4A9BA3',MINT='#8ED9D2';
+  const CH=[
+    {label:'Fz',yR:.18,amp:20,freq:1.8,ph:0,   noise:.35,col:DEEP},
+    {label:'Cz',yR:.34,amp:26,freq:1.4,ph:.7,  noise:.45,col:MID},
+    {label:'Pz',yR:.50,amp:30,freq:1.1,ph:1.3, noise:.50,col:LIGHT},
+    {label:'Oz',yR:.66,amp:24,freq:2.2,ph:.4,  noise:.30,col:MINT},
+    {label:'T7',yR:.82,amp:18,freq:1.6,ph:1.9, noise:.55,col:DEEP},
+  ];
+  const NODES=Array.from({length:12},(_,i)=>({
+    xR:(i/12)+Math.random()*.06,ci:Math.floor(Math.random()*CH.length),
+    r:2.8+Math.random()*2.2,speed:.0003+Math.random()*.0004,pp:Math.random()*Math.PI*2
+  }));
+  let W=0,H=0,t=0;
+  const SPEED=.0012;
+  function noise(ci,x,t){
+    return (Math.sin(x*13.7+ci*7.3+t*3.1)+Math.sin(x*7.2+ci*3.1+t*5.7)*.5+Math.sin(x*29.1+ci*11.7+t*2.3)*.25)/1.75;
+  }
+  function resize(){
+    const rc=canvas.parentElement.getBoundingClientRect();
+    canvas.width=rc.width*devicePixelRatio; canvas.height=rc.height*devicePixelRatio;
+    W=canvas.width; H=canvas.height;
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  }
+  function draw(){
+    const w=W/devicePixelRatio,h=H/devicePixelRatio;
+    ctx.clearRect(0,0,w,h);
+    const bg=ctx.createRadialGradient(w*.5,h*.5,0,w*.5,h*.5,w*.7);
+    bg.addColorStop(0,'rgba(142,217,210,.07)'); bg.addColorStop(1,'rgba(246,252,251,0)');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='rgba(15,91,99,.04)'; ctx.lineWidth=.5;
+    for(let gx=0;gx<w;gx+=w/8){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke()}
+    for(let gy=0;gy<h;gy+=h/6){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke()}
+    CH.forEach((ch,ci)=>{
+      const cy=h*ch.yR,pts=[],STEPS=220;
+      for(let i=0;i<=STEPS;i++){
+        const xr=i/STEPS,x=xr*w;
+        const base=Math.sin(xr*Math.PI*2*ch.freq*4+t*ch.freq+ch.ph)*ch.amp
+          +Math.sin(xr*Math.PI*2*ch.freq*8+t*ch.freq*2+ch.ph)*ch.amp*.4
+          +Math.sin(xr*Math.PI*2*ch.freq*14+t*ch.freq*3)*ch.amp*.15
+          +noise(ci,xr,t)*ch.amp*ch.noise;
+        const erpX=.40,erpW=.10;
+        const erp=Math.exp(-Math.pow((xr-erpX)/erpW,2))*ch.amp*1.1*Math.sin(t*.4+ci);
+        pts.push({x,y:cy+base+erp});
+      }
+      ctx.save();ctx.shadowColor=ch.col;ctx.shadowBlur=7;
+      ctx.strokeStyle=ch.col;ctx.lineWidth=1.6;ctx.globalAlpha=.82;
+      ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle=ch.col;ctx.globalAlpha=.55;ctx.font=`bold ${Math.round(w*.022)}px Open Sans,sans-serif`;
+      ctx.fillText(ch.label,8,cy-4);ctx.globalAlpha=1;
+    });
+    NODES.forEach(nd=>{
+      nd.xR-=nd.speed; if(nd.xR<-.05)nd.xR=1.05;
+      const ch=CH[nd.ci],x=nd.xR*w,cy=h*ch.yR,xr=nd.xR;
+      const base=Math.sin(xr*Math.PI*2*ch.freq*4+t*ch.freq+ch.ph)*ch.amp
+        +Math.sin(xr*Math.PI*2*ch.freq*8+t*ch.freq*2+ch.ph)*ch.amp*.4
+        +noise(nd.ci,xr,t)*ch.amp*ch.noise;
+      const ny=cy+base;
+      const pulse=.6+.4*Math.sin(t*3+nd.pp);
+      const r=nd.r*pulse;
+      ctx.save();ctx.globalAlpha=.18*pulse;ctx.fillStyle=ch.col;
+      ctx.beginPath();ctx.arc(x,ny,r*3.5,0,Math.PI*2);ctx.fill();ctx.restore();
+      ctx.save();ctx.shadowColor=ch.col;ctx.shadowBlur=10;ctx.fillStyle='#fff';ctx.globalAlpha=.95;
+      ctx.beginPath();ctx.arc(x,ny,r,0,Math.PI*2);ctx.fill();ctx.restore();
+      ctx.save();ctx.fillStyle=ch.col;ctx.globalAlpha=.9;
+      ctx.beginPath();ctx.arc(x,ny,r*.55,0,Math.PI*2);ctx.fill();ctx.restore();
+    });
+    const scanX=((t*180)%w);
+    const sg=ctx.createLinearGradient(scanX-18,0,scanX+2,0);
+    sg.addColorStop(0,'rgba(142,217,210,0)');sg.addColorStop(1,'rgba(142,217,210,.1)');
+    ctx.fillStyle=sg;ctx.fillRect(scanX-18,0,20,h);
+    t+=SPEED;requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{ctx.setTransform(1,0,0,1,0,0);resize()});
+  resize();draw();
+})();
+
+/* ── FAQ accordion ── */
+function toggleFaq(btn){
+  const a=btn.nextElementSibling;
+  const isOpen=btn.classList.contains('open');
+  document.querySelectorAll('.faq-q.open').forEach(b=>{
+    b.classList.remove('open');b.nextElementSibling.style.maxHeight='0';
+  });
+  if(!isOpen){btn.classList.add('open');a.style.maxHeight=a.scrollHeight+'px';}
+}
+
+/* ── Demo form ── */
+function submitForm(e){
+  e.preventDefault();
+  document.getElementById('demo-form-wrap').style.display='none';
+  document.getElementById('thanks-msg').style.display='block';
+}
+</script>
+</body>
+</html>
