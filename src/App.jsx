@@ -1,23 +1,15 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Landing from './pages/Landing'
-import Analyze from './pages/Analyze'
-import Results from './pages/Results'
-import Report from './pages/Report'
+import Home from './pages/Home'
+import Footer from './components/Footer'
 
 function App() {
-  const location = useLocation()
-  const hideNav = false // navbar visible everywhere
-
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/analyze" element={<Analyze />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/report" element={<Report />} />
-      </Routes>
+      <main>
+        <Home />
+      </main>
+      <Footer />
     </div>
   )
 }
